@@ -40,22 +40,18 @@ module DepGraph
     end
     
     def load_nodes(g, nodes)
-      puts "nodes is #{nodes}"
       nodes.each do |node|
-        puts "node: #{quotify(node)}"
         g[node] = []
       end
     end
     
     def load_edges(g, edges)
       edges.each do |from, to|
-        puts "from: #{from} , to: #{to}"
         g[from] << to unless g[from].include?(to)
       end
     end
     
     def create_output(g, image_file_name)
-        puts g.to_json
         File::open(image_file_name, 'w') { |f| f.write( JSON.pretty_generate(g) ) }  
     end
     
