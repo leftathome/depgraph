@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'node'
 require 'graph_image_creator'
+require 'graph_json_creator'
 require 'file_system_node_finder'
 require 'dependency_types_manager'
 
@@ -8,9 +9,13 @@ module DepGraph
   class GraphCreator
     attr_writer :graph_image_creator_class, :from, :to, :node_finder, :trans
     
-    def initialize(node_type = :none)
+    def initialize(node_type = :none, graph_format = "png")
       @node_finder = get_node_finder(node_type)
-      @graph_image_creator_class = GraphImageCreator
+      if graph_format == 'json'
+        @graph_image_creator_class = GraphJsonCreator
+      else
+        @graph_image_creator_class = GraphImageCreator
+      end
       @trans = false
     end
     
