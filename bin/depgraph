@@ -43,6 +43,10 @@ module CommandLineParameters extend OptiFlagSet
     description "The file name of the graph image."
   end
 
+  optional_switch_flag "json" do
+    description "Actually output in JSON."
+  end
+
   optional_flag "from" do
     description "Regular expression that must be met by the dependency source."
   end
@@ -72,10 +76,16 @@ from = CommandLineParameters.flags.from if CommandLineParameters.flags.from?
 to = CommandLineParameters.flags.to if CommandLineParameters.flags.to?
 exc = CommandLineParameters.flags.exc || ''
 trans = CommandLineParameters.flags.trans?
+format = CommandLineParameters.flags.json? ? "json" : "png"
 
-puts "Creating #{type} dependency graph. Please wait..."
+if File::extname(output) != ".#{format}"
+  puts "AHA!"
+  output.gsub!(File::extname(output),".#{format}")
+end
 
-dep_grapher = DepGraph::GraphCreator.new(type)
+puts "Creating #{type} dependency graph as #{output}. Please wait..."
+
+dep_grapher = DepGraph::GraphCreator.new(type, format)
 dep_grapher.location = location.split(',') if location
 dep_grapher.from = from
 dep_grapher.to = to

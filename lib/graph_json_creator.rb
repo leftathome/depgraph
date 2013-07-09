@@ -3,12 +3,10 @@ require 'json'
 
 module DepGraph
   class GraphJsonCreator < DepGraph::GraphImageCreator
-    attr_writer :trans
-    
     def create_image(image_file_name)
       begin
         return false if @nodes.size == 0 or @edges.size == 0
-        
+
         set_default_output_generation_unless_is_set
         
         return @output_generation.call(@nodes, @edges, image_file_name)
@@ -31,7 +29,7 @@ module DepGraph
           #TODO: Could we catch Graphviz errors that the wrapper couldn't catch?        
 
           g = {}
-          load_nodes(g, nodes)        
+          load_nodes(g, nodes)
           load_edges(g, edges)
 
           create_output(g, image_file_name)          
@@ -42,22 +40,23 @@ module DepGraph
     end
     
     def load_nodes(g, nodes)
+      puts "nodes is #{nodes}"
       nodes.each do |node|
-        puts "node: #{quotify(node)}, dependencies: #{node.dependencies}"
-        g[quotify(node)] = node.dependencies
+        puts "node: #{quotify(node)}"
+        g[node] = []
       end
     end
     
     def load_edges(g, edges)
       edges.each do |from, to|
         puts "from: #{from} , to: #{to}"
-        g[quotify(from)] << quotify(to) unless g[quotify(from)].include?(quotify(to))
+        g[from] << to unless g[from].include?(to)
       end
     end
     
     def create_output(g, image_file_name)
         puts g.to_json
-        File::open(image_file_name) { |f| f.write(g.to_json) }  
+        File::open(image_file_name, 'w') { |f| f.write( JSON.pretty_generate(g) ) }  
     end
     
     def get_output_type(image_file_name)
