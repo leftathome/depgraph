@@ -17,9 +17,9 @@ module DepGraph
 
         nodes = {}
         @spec_directories.each do |spec_directory|
-	  puts "sd: #{spec_directory}"
+	  #puts "sd: #{spec_directory}"
           Dir["#{spec_directory}/**/metadata.rb"].each do |metadata_file_name|
-	    puts "Filename: #{metadata_file_name}"
+	    #puts "Filename: #{metadata_file_name}"
             add_nodes_from_metadata(nodes, metadata_file_name)
           end
         end
@@ -32,7 +32,7 @@ module DepGraph
         cb_dependencies = get_cb_dependencies(metadata_file_name)
         cb_name = get_cb_name(metadata_file_name)
 
-	puts "cbd: #{cb_dependencies} and cbn: #{cb_name}"
+	#puts "cbd: #{cb_dependencies} and cbn: #{cb_name}"
 
         nodes[cb_name] ||= Node.new(cb_name)
         cb_dependencies.each do |cb_dependency|
