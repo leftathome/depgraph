@@ -4,19 +4,25 @@ module DepGraph
   class Node
     include Comparable
     attr_reader :name
+    attr_accessor :version
 
-    def initialize(node_uri)
+    def initialize(node_uri, version = nil)
       fail 'Empty uris are not allowed' if node_uri.empty?
       @name = node_uri
+      @version = version
       @dependencies = []
     end
       
     def to_str
-      @name
+      if @version
+        "#{@name} #{@version}"
+      else
+        @name
+      end
     end
     
     def <=> other_node
-      @name <=> other_node.to_str
+      to_str <=> other_node.to_str
     end
     
     def eql? other_node
