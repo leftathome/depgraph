@@ -14,11 +14,7 @@ module DepGraph
     end
       
     def to_str
-      if @version
-        "#{@name} #{@version}"
-      else
-        @name
-      end
+      "#{@name} #{@version}".strip
     end
     
     def <=> other_node
