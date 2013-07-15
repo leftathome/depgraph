@@ -7,16 +7,16 @@ require 'dependency_types_manager'
 
 module DepGraph
   class GraphCreator
-    attr_writer :graph_image_creator_class, :from, :to, :node_finder, :trans, :show_versions
+    attr_writer :graph_image_creator_class, :from, :to, :node_finder, :trans
     
-    def initialize(node_type = :none, graph_format = "png")
+    def initialize(node_type = :none, graph_format = "png", show_versions = false)
       @node_finder = get_node_finder(node_type)
+      @node_finder.show_versions = show_versions if @node_finder.respond_to? :show_versions
       if graph_format == 'json'
         @graph_image_creator_class = GraphJsonCreator
       else
         @graph_image_creator_class = GraphImageCreator
       end
-      @show_versions = false
       @trans = false
     end
     
@@ -45,7 +45,6 @@ module DepGraph
       nodes = remove_disconnected_nodes(nodes)
 
       graph = @graph_image_creator_class.new
-      graph.show_versions = @show_versions
       return graph if nodes.size < 2
 
       nodes.each do |node|
@@ -72,7 +71,7 @@ module DepGraph
         end
         
         node_finder_class = deep_const_get("DepGraph::NodeFinders::#{camelize(node_type.to_s)}NodeFinder")
-        @node_finder = node_finder_class.new 
+        @node_finder = node_finder_class.new
       rescue
         @node_finder = FileSystemNodeFinder.new(node_type)
       end

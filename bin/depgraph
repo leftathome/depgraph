@@ -81,7 +81,7 @@ to = CommandLineParameters.flags.to if CommandLineParameters.flags.to?
 exc = CommandLineParameters.flags.exc || ''
 trans = CommandLineParameters.flags.trans?
 format = CommandLineParameters.flags.json? ? "json" : "png"
-versions = CommandLineParameters.flags.versions?
+show_versions = CommandLineParameters.flags.versions?
 
 if File::extname(output) != ".#{format}"
   puts "AHA!"
@@ -90,13 +90,12 @@ end
 
 puts "Creating #{type} dependency graph as #{output}. Please wait..."
 
-dep_grapher = DepGraph::GraphCreator.new(type, format)
+dep_grapher = DepGraph::GraphCreator.new(type, format, show_versions)
 dep_grapher.location = location.split(',') if location
 dep_grapher.from = from
 dep_grapher.to = to
 dep_grapher.trans = trans
 dep_grapher.excluded_nodes = exc.split(',')
-dep_grapher.show_versions = versions
 
 if dep_grapher.create_image(output)
   puts "Done.\nResults in #{output}."
