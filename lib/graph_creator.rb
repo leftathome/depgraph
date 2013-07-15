@@ -7,7 +7,7 @@ require 'dependency_types_manager'
 
 module DepGraph
   class GraphCreator
-    attr_writer :graph_image_creator_class, :from, :to, :node_finder, :trans
+    attr_writer :graph_image_creator_class, :from, :to, :node_finder, :trans, :show_versions
     
     def initialize(node_type = :none, graph_format = "png")
       @node_finder = get_node_finder(node_type)
@@ -16,6 +16,7 @@ module DepGraph
       else
         @graph_image_creator_class = GraphImageCreator
       end
+      @show_versions = false
       @trans = false
     end
     
@@ -43,7 +44,8 @@ module DepGraph
       nodes = apply_filters(nodes)
       nodes = remove_disconnected_nodes(nodes)
 
-      graph = @graph_image_creator_class.new            
+      graph = @graph_image_creator_class.new
+      graph.show_versions = @show_versions
       return graph if nodes.size < 2
 
       nodes.each do |node|

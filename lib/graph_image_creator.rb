@@ -3,12 +3,13 @@ require 'graphviz'
 
 module DepGraph
   class GraphImageCreator
-    attr_writer :trans
+    attr_writer :trans, :show_versions
     
     def initialize
       @nodes = []
       @edges = []
       @trans = false
+      @show_versions = false
     end
 
     def node_count
