@@ -7,7 +7,8 @@ include FileTestHelper
 test_data = {
   :csproj => {'file1.csproj'=>'"file2.csproj"', 'dir/file2.csproj'=>'"file1.csproj"' },
   :ruby_requires => {'file1.rb'=>'require "file2"', 'dir/file2.rb'=>'require "file1"' },
-  :gems => {}
+  :gems => {},
+  :cookbook => {'metadata.rb' => "name 'foo'\ndepends 'bar'"}
 }
 
 describe GraphCreator, '(integration tests)' do

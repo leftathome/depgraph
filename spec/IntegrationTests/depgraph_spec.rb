@@ -13,7 +13,8 @@ describe "#{tool_name} (integration tests)" do
   test_data = {
     :csproj => {'proj1.csproj' => '"proj2.csproj"', 'proj2.csproj' => '"proj1.csproj"'},
     :ruby_requires => {'rubyfile1.rb' => 'require "rubyfile2"', 'rubyfile2.rb' => 'require "rubyfile3"'},
-    :gems => {}
+    :gems => {},
+    :cookbook => {'metadata.rb' => "name 'foo'\ndepends 'bar'"}
   }
 
   DepGraph::GraphCreator.types.each do |filter_type|
