@@ -37,7 +37,6 @@ module DepGraph
 
         nodes[cb_name] ||= Node.new(cb_name)
         nodes[cb_name].version = cb_version
-        puts "added node #{nodes[cb_name].to_str}"
         cb_dependencies.each do |cb_dependency|
           nodes[cb_dependency] ||= Node.new(cb_dependency)
           nodes[cb_name].depends_on(nodes[cb_dependency])
