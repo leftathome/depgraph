@@ -4,6 +4,7 @@ module DepGraph
   class Node
     include Comparable
     attr_reader :name
+    attr_writer :version
 
     def initialize(node_uri)
       fail 'Empty uris are not allowed' if node_uri.empty?
@@ -12,11 +13,11 @@ module DepGraph
     end
       
     def to_str
-      @name
+      "#{@name} #{@version}".strip
     end
     
     def <=> other_node
-      @name <=> other_node.to_str
+      to_str <=> other_node.to_str
     end
     
     def eql? other_node

@@ -47,6 +47,10 @@ module CommandLineParameters extend OptiFlagSet
     description "Actually output in JSON."
   end
 
+  optional_switch_flag "versions" do
+    description "Add version labels to nodes and edges."
+  end
+
   optional_flag "from" do
     description "Regular expression that must be met by the dependency source."
   end
@@ -77,6 +81,7 @@ to = CommandLineParameters.flags.to if CommandLineParameters.flags.to?
 exc = CommandLineParameters.flags.exc || ''
 trans = CommandLineParameters.flags.trans?
 format = CommandLineParameters.flags.json? ? "json" : "png"
+show_versions = CommandLineParameters.flags.versions?
 
 if File::extname(output) != ".#{format}"
   puts "AHA!"
@@ -85,7 +90,7 @@ end
 
 puts "Creating #{type} dependency graph as #{output}. Please wait..."
 
-dep_grapher = DepGraph::GraphCreator.new(type, format)
+dep_grapher = DepGraph::GraphCreator.new(type, format, show_versions)
 dep_grapher.location = location.split(',') if location
 dep_grapher.from = from
 dep_grapher.to = to
